@@ -1,12 +1,15 @@
 <?
-  include('script/conn.php');
+  require_once('script/conn.php');
   include('script/function.php');
-  connect_mysql();
-  mysql_select_db('ivaoth_book') or die('ERR: Database not found');
   $today=date('Y-m-d')." 23:59:59";
   $sql="SELECT `table_name`, `full_name`, `book_end_expire` FROM `name` WHERE `event_expire`<".$today;
   $query=mysql_query($sql);
   $count=0;
+  $is_staff=false;
+  if(isset($_COOKIE['stafflogintoken']) && isset($_COOKIE['staffvid']))
+  {
+    $is_staff=check_is_staff($_COOKIE['staffvid'],$_COOKIE['stafflogintoken']);
+  }
   while($row=mysql_fetch_array($query))
   {
     $dat[$count][0]=$row[0]; //ID
@@ -49,7 +52,10 @@
         <li class="active"><a href="#">Event</a></li>
         <li><a href="#">Rules</a></li>
         <li><a href="#">About</a></li>
-        <li><a onclick="$('#create_ev').modal('open');" <? //class="modal-trigger" href="#create_ev" ?>><i class="material-icons">add</i></a></li>
+        <? if($is_staff) { ?><li><a onclick="$('#create_ev').modal('open');" <? //class="modal-trigger" href="#create_ev" ?>><i class="material-icons">add</i></a></li><? } ?>
+      </ul>
+      <ul class="right hide-on-med-and-down">
+        <? if($is_staff) { ?><li>Staff Access&nbsp;&nbsp;</li><? } else { ?><li>Normal Access&nbsp;&nbsp;</li><? } ?>
       </ul>
     </div>
   </nav>
@@ -90,6 +96,7 @@
     </div>
   </div>
 
+  <? if($is_staff) { ?>
   <div id="create_ev" class="modal">
     <div class="modal-content">
       <h4>Creating Event</h4>
@@ -135,6 +142,7 @@
       <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
     </div>
   </div>
+  <? } ?>
 
   <footer><center>© <? if(date("Y")>2017){ echo '2017-'; } echo date("Y"); ?> RiffyTech Corporation</center></footer>
 

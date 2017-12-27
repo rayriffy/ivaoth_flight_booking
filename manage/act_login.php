@@ -1,5 +1,5 @@
 <?
-  include('../script/conn.php');
+  require_once('../script/conn.php');
   include('../script/function.php');
   //IVAO LOGIN API
   define('cookie_name', 'ivao_token');
@@ -27,8 +27,6 @@
     if($user_array->result)
     {
       $vid=utf8_decode($user_array->vid);
-      connect_mysql();
-      mysql_select_db('ivaoth_book') or die('ERR: Database not found');
       $sql="SELECT * FROM `allowed_vid_staff` WHERE `vid` = ".$vid;
       $query=mysql_query($sql);
       while($row=mysql_fetch_array($query))
@@ -38,13 +36,14 @@
       if($vid==$response)
       {
         $salt="Y10gjnnwhG";
-        setcookie('stafflogintoken', hashplz($vid), time()+7200);
-        setcookie('staffvid',$vid, time()+7200);
-        header('Location: ../');
+        setcookie('stafflogintoken', hashplz($vid), time()+7200,'/');
+        setcookie('staffvid',$vid, time()+7200,'/');
+        header('Location: /');
       }
       else
       {
-        header('Location login.php?error=2');
+        setcookie('staffloginstat',2,time()+600,'/');
+        header('Location: login.php');
       }
       mysql_close();
       //Success! A user has been found!

@@ -1,7 +1,4 @@
 <?
-  function connect_mysql()
-  {
-    $conn = mysql_connect('localhost','USER','PASS') or die('ERR: Could not connect to MySQL');
-    return $conn;
-  }
+  mysql_connect('#HOST#','#USER#','#PASS#') or die('ERR: Could not connect to MySQL');
+  mysql_select_db('ivaoth_book') or die('ERR: Database not found');
 ?>

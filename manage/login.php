@@ -39,17 +39,17 @@
           <div class="card-content">
             <span class="card-title">Login</span>
             <div class="row">
-              <? if($_REQUEST['error']==2){ ?>
+              <? if(isset($_COOKIE['staffloginstat'])) { if($_COOKIE['staffloginstat']==2){ ?>
               <div class="chip red lighten-1 white-text col s12">
                 <center>Restricted Area
                 <i class="close material-icons">close</i></center>
               </div>
-              <? } else if($_REQUEST['error']==3) { ?>
+              <? } else if($_COOKIE['staffloginstat']==3) { ?>
               <div class="chip red lighten-1 white-text col s12">
                 <center>Invalid session!
                 <i class="close material-icons">close</i></center>
               </div>
-              <? } ?>
+            <? } setcookie('staffloginstat',null,time()-7200); } ?>
               <div class="col s12">&nbsp;</div>
               <a class="btn waves-effect waves-light blue col s12" href="act_login.php">LOGIN VIA <b>IVAO ID</b></a>
             </div>
