@@ -55,7 +55,7 @@
         <? if($is_staff) { ?><li><a onclick="$('#create_ev').modal('open');" <? //class="modal-trigger" href="#create_ev" ?>><i class="material-icons">add</i></a></li><? } ?>
       </ul>
       <ul class="right hide-on-med-and-down">
-        <? if($is_staff) { ?><li>Staff Access&nbsp;&nbsp;</li><? } else { ?><li>Normal Access&nbsp;&nbsp;</li><? } ?>
+        <? if($is_staff) { ?><li><span class="red darken-3 new badge" data-badge-caption="Staff Access"></span>&nbsp;&nbsp;</li><? } else { ?><li><span class="blue darken-3 new badge" data-badge-caption="Normal Access"></span>&nbsp;&nbsp;</li><? } ?>
       </ul>
     </div>
   </nav>
@@ -118,7 +118,7 @@
           </div>
           <div class="input-field col s12 l6">
             <input id="ev_des" type="text" class="validate">
-            <label for="ev_des">Discription</label>
+            <label for="ev_des">Description</label>
           </div>
         </div>
         <div class="row">
