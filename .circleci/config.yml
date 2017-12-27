@@ -1,0 +1,55 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/booking
+    docker:
+      - image: centos:centos6.9
+    steps:
+      - checkout
+      - run:
+          name: Update Container
+          command: yum update -y
+      - run:
+          name: Install Development Tools
+          command: yum groupinstall -y 'Development Tools'
+      - run:
+          name: Hotfix to container
+          command: yum install -y ca-certificates curl sudo
+      - run:
+          name: Install Required Packages
+          command: yum install -y uglifyjs zip unzip git wget tar gcc gcc+ make nodejs npm
+      - run:
+          name: Install PHP 
+          command: |
+            yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+            yum install -y http://rpms.remirepo.net/enterprise/remi-release-6.rpm
+            yum install -y yum-utils
+            yum-config-manager --enable remi-php70
+            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo php-json
+      - run:
+          name: Check PHP version
+          command: php -v
+      - run:
+          name: Install composer
+          command: |
+            mkdir ~/phplint
+            cd ~/phplint
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            php composer-setup.php
+            php -r "unlink('composer-setup.php');"
+      - run:
+          name: composer
+          command: |
+            cd ~/phplint
+            php composer.phar require --dev jakub-onderka/php-parallel-lint
+            php composer.phar require --dev jakub-onderka/php-console-highlighter
+      - run:
+          name: Test Files
+          command: |
+            cd ~/phplint
+            ./vendor/bin/parallel-lint ~/booking/*
+      - store_artifacts:
+          path: /root/booking
+      - store_artifacts:
+          path: /root/phplint
