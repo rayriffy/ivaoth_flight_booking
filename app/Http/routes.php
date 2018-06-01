@@ -1,6 +1,10 @@
 <?php
 
-use App\IVAO;
+use App\DATAATC;
+use App\DATAPILOT;
+use App\DATAEVENT;
+use App\STAFF;
+use App\DATA;
 
 /*
 |--------------------------------------------------------------------------
