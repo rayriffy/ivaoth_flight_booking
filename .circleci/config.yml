@@ -58,6 +58,8 @@ jobs:
             - node_modules
             - ~/.yarn
 
+      - run: cp .env.example .env
+
       # prepare the database
       - run: php artisan migrate --env=testing --force
 
