@@ -65,7 +65,6 @@ jobs:
 
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
-      - run: ./vendor/bin/codecept bootstrap
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run --xml result.xml
       - store_test_results:
